@@ -25,7 +25,7 @@ export async function signUp(req, res) {
 
 export async function signIn(req, res) {
 
-    const userIn = res.locals.user;
+    const userIn = req.body;
 
     const token = uuidV4();
 
@@ -33,7 +33,7 @@ export async function signIn(req, res) {
 
     try {
 
-        const operation = await db.query('UPDATE users SET token = $1 WHERE email = $2', [token, userIn.email]);
+        await db.query('UPDATE users SET token = $1 WHERE email = $2', [token, userIn.email]);
 
         return res.status(200).send(body);
 
