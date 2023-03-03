@@ -7,11 +7,7 @@ import { shortenedUrlSchema } from "../schemas/shortenSchema.js";
 
 export async function shortenedUrlValidation(req, res, next) {
 
-    const url = req.body;
-
-    const { authorization } = req.headers;
-
-    const token = authorization?.replace("Bearer ", "");
+    const { url } = req.body;
 
 
     const { error } = shortenedUrlSchema.validate(url, { abortEarly: false });
@@ -21,7 +17,7 @@ export async function shortenedUrlValidation(req, res, next) {
         return res.status(422).send(errorsMessage);
     }
 
-    res.locals.token = token;
+    
 
     next();
 }
