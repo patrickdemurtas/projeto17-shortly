@@ -61,8 +61,7 @@ export async function signUpValidation(req, res, next) {
 export async function singInValidation(req, res, next) {
 
     const requisition = req.body;
-    const email = requisition.email;
-    const password = requisition.password;
+   
 
     const { error } = signInSchema.validate(requisition, { abortEarly:false });
 
@@ -73,12 +72,12 @@ export async function singInValidation(req, res, next) {
 
     try {
 
-        const checkEmail = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+        const checkEmail = await db.query('SELECT * FROM users WHERE email = $1', [requisition.email]);
         
         
         if (checkEmail.rows.length === 0) return res.sendStatus(401);
 
-        const realPassword = await db.query('SELECT password FROM users WHERE email = $1' [email]);
+        const realPassword = await db.query('SELECT password FROM users WHERE email = $1' [requisition.email]);
 
 
         const checkPassword = bcrypt.compareSync(password, realPassword.password);
