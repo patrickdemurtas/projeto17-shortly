@@ -74,7 +74,7 @@ export async function singInValidation(req, res, next) {
     try {
 
         const checkEmail = await db.query('SELECT * FROM users WHERE email = $1', [email]);
-        const user = checkEmail;
+        
         
         if (checkEmail.rows.length === 0) return res.sendStatus(401);
 
@@ -85,7 +85,7 @@ export async function singInValidation(req, res, next) {
 
         if (!checkPassword) return res.sendStatus(401);
 
-        res.locals.user = user;
+        res.locals.user = checkEmail;
         
     } catch (error) {
 
