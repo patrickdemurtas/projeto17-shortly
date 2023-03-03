@@ -2,23 +2,27 @@ import db from "../database/database.connection.js";
 import { nanoid } from "nanoid";
 
 export async function shortenedUrl(req, res) {
+  
+  const { url } = req.body;
+  const shortUrl = nanoid(6);
 
-    const { url } = req.body;
+  const token = res.locals.token;
 
-    const shortUrl = nanoid();
+  try {
+    
+    let id = await db.query('SELECT MAX(id) FROM urls');
+    id = id.rows[0].max +1;
+    let userId = await db.query('SELECT id FROM users WHERE token = $1',[token]);
+    userId = userId.rows[0].id;
+    await db.query('INSERT INTO urls ("userId", url, "shortenedUrl") VALUES ($1,$2,$3)', [userId, url, shortUrl]);
 
-    try {
+    const body = { id, shortUrl };
+    return res.status(201).send(body);
 
-        const operationUrl = await db.query('INSERT INTO urls (url, "shortenedUrl") VALUES ($1,$2) RETURNING id', [url, shortUrl]);
 
-        const id = operationUrl.rows[0].id;
-        const body = { id, shortUrl };
+  } catch (error) {
+    return res.status(500).send('server problem!');
+  }
 
-        return res.status(201).json(body);
-
-    } catch (error) {
-
-        return res.status(500).send('server problem!')
-
-    }
+   
 }

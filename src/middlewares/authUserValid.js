@@ -10,7 +10,7 @@ export async function authRoutesValidation(req, res, next) {
 
     const { authorization } = req.headers;
 
-    let token = authorization?.replace("Bearer ", "");
+    const token = authorization?.replace("Bearer ", "");
 
     if (!token) return res.status(401).send("unauthorized!")
 
@@ -21,7 +21,7 @@ export async function authRoutesValidation(req, res, next) {
 
         const user = check.rows[0];
 
-        res.locals.user = user;
+        res.locals.token = token;
 
     } catch (error) {
         res.status(500).send('server problem!');
@@ -61,9 +61,9 @@ export async function signUpValidation(req, res, next) {
 export async function singInValidation(req, res, next) {
 
     const user = req.body;
-   
 
-    const { error } = signInSchema.validate(user, { abortEarly:false });
+
+    const { error } = signInSchema.validate(user, { abortEarly: false });
 
     if (error) {
         const errorsMessage = error.details.map((dt) => dt.message);
@@ -73,16 +73,16 @@ export async function singInValidation(req, res, next) {
     try {
 
         const checkEmail = await db.query('SELECT * FROM users WHERE email = $1', [user.email]);
-        
-        
+
+
         if (!checkEmail.rows[0] || !bcrypt.compareSync(user.password, checkEmail.rows[0].password)) return res.sendStatus(401);
 
         res.locals.user = user;
-        
+
     } catch (error) {
 
         res.status(500).send("server problem!");
-        
+
     }
 
     next();
