@@ -30,7 +30,7 @@ CREATE TABLE public.urls (
     url text NOT NULL,
     "shortenedUrl" character varying(100) NOT NULL,
     "createdAt" timestamp without time zone DEFAULT now(),
-    "visitCount" integer NOT NULL
+    "visitCount" integer
 );
 
 
@@ -112,8 +112,6 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.users VALUES (1, 'trick', 'trick@email.com', 'driven', NULL, '2023-03-03 01:37:00.896672');
-INSERT INTO public.users VALUES (2, 'trick2', 'trick2@email.com', '$2b$10$fO0Xr/8feLK3BI4eVRvXP.QP0KREMgrf5dCoe.9G7HwQmCUyHToeu', 'e7fe3a7a-05bb-40af-9e97-804bb7c130a5', '2023-03-03 01:41:02.257249');
 
 
 --
