@@ -17,9 +17,7 @@ export async function authRoutesValidation(req, res, next) {
     try {
 
         const check = await db.query('SELECT * FROM users WHERE token = $1', [token]);
-        if (check.rows.length === 0) return res.status(401).send("unauthorized!");
-
-        const user = check.rows[0];
+        if (!check.rows[0]) return res.status(401).send("unauthorized!");
 
         
 
