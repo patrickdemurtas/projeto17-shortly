@@ -21,12 +21,12 @@ export async function authRoutesValidation(req, res, next) {
 
         const user = check.rows[0];
 
-        res.locals.token = token;
+        
 
     } catch (error) {
         res.status(500).send('server problem!');
     }
-
+    res.locals.token = token;
     next();
 }
 
