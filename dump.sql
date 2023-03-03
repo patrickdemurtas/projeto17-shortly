@@ -30,7 +30,7 @@ CREATE TABLE public.urls (
     url text NOT NULL,
     "shortenedUrl" character varying(100) NOT NULL,
     "createdAt" timestamp without time zone DEFAULT now(),
-    "visitCount" integer
+    "visitCount" integer DEFAULT 0
 );
 
 
