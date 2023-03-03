@@ -11,7 +11,7 @@ export async function signUp(req, res) {
 
     try {
 
-        await db.query('INSERT INTO users (name, email, password) VALUES ($1,$2,$3)', [registerUser.name, registerUser.email, registerUser.password]);
+        await db.query('INSERT INTO users (name, email, password) VALUES ($1,$2,$3)', [registerUser.name, registerUser.email, passwordHash]);
 
         return res.sendStatus(201);
 
@@ -25,7 +25,7 @@ export async function signUp(req, res) {
 
 export async function signIn(req, res) {
 
-    const userIn = req.body;
+    const userIn = res.locals.user;
 
     const token = uuidV4();
 
