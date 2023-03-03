@@ -75,13 +75,7 @@ export async function singInValidation(req, res, next) {
         const checkEmail = await db.query('SELECT * FROM users WHERE email = $1', [user.email]);
         
         
-        if (checkEmail.rows.length === 0) return res.sendStatus(401);
-
-        const { password } = checkEmail.rows[0];
-
-        const checkPassword = bcrypt.compareSync(user.password, password);
-
-        if (!checkPassword) return res.sendStatus(401);
+        if (!checkEmail.rows[0] || !bcrypt.compareSync(user.password, checkEmail.rows[0].password)) return res.sendStatus(401);
 
         res.locals.user = user;
         
