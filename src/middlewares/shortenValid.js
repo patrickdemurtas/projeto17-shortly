@@ -1,4 +1,3 @@
-import db from "../database/database.connection.js";
 import { shortenedUrlSchema } from "../schemas/shortenSchema.js";
 
 
@@ -7,10 +6,10 @@ import { shortenedUrlSchema } from "../schemas/shortenSchema.js";
 
 export async function shortenedUrlValidation(req, res, next) {
 
-    const { url } = req.body;
+    const requisition = req.body;
 
 
-    const { error } = shortenedUrlSchema.validate(url, { abortEarly: false });
+    const { error } = shortenedUrlSchema.validate(requisition, { abortEarly: false });
 
     if (error) {
         const errorsMessage = error.details.map((dt) => dt.message);
