@@ -84,7 +84,7 @@ export async function singInValidation(req, res, next) {
 
         if (!checkPassword) return res.sendStatus(401);
 
-        res.locals.user = checkEmail;
+        res.locals.user = requisition;
         
     } catch (error) {
 
