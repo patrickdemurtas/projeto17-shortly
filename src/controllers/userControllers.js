@@ -43,3 +43,34 @@ export async function signIn(req, res) {
 
     }
 }
+
+
+export async function getUserInfo(req, res) {
+
+   let visits = 0;
+   let shortUrls = [];
+
+   const token = res.locals.token;
+
+   try {
+     
+    const userInfo = await db.query('SELECT id, name FROM users WHERE token = $1', [token]);
+
+    const urlsInfo = await db.query('SELECT * FROM urls WHERE "userId" = $1', [userInfo.rows[0].id]);
+
+    for (let z = 0; z < urlsInfo.rows.length; z++){
+        let aux = {id: urlsInfo.rows[z].id, shortUrl: urlsInfo.rows[z].shortenedUrl, url: urlsInfo.rows[z].url, visitCount: urlsInfo.rows[z].visitCount};
+        visits = visits + urlsInfo.rows[z].visitCount;
+        shortUrls.push(aux);
+    }
+     
+    const body = { id: userInfo.rows[0].id, name: userInfo.rows[0].name, visitCount: visits, shortenedUrls: shortUrls };
+    return res.status(200).send(body);
+     
+   } catch (error) {
+    
+    return res.status(500).send('server problem!');
+
+   }
+
+}
